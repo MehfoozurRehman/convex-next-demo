@@ -21,11 +21,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       convex:
-        specifier: ^1.31.1
-        version: 1.31.1(react@19.2.3)
+        specifier: ^1.31.2
+        version: 1.31.2(react@19.2.3)
       lucide-react:
-        specifier: ^0.561.0
-        version: 0.561.0(react@19.2.3)
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
       next:
         specifier: 15.5.9
         version: 15.5.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1217,8 +1217,8 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  convex@1.31.1:
-    resolution: {integrity: sha512-VcElFD0q+BxxhYmoxoiOIsInmMrPMsGHpFSD1UYybRDJYvbNd69977ra6e3EXywUOF4qE0P4In9qCphr78QYCw==}
+  convex@1.31.2:
+    resolution: {integrity: sha512-RFuJOwlL2bM5X63egvBI5ZZZH6wESREpAbHsLjODxzDeJuewTLKrEnbvHV/NWp1uJYpgEFJziuGHmZ0tnAmmJg==}
     engines: {node: '>=18.0.0', npm: '>=7.0.0'}
     hasBin: true
     peerDependencies:
@@ -1849,8 +1849,8 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
-  lucide-react@0.561.0:
-    resolution: {integrity: sha512-Y59gMY38tl4/i0qewcqohPdEbieBy7SovpBL9IFebhc2mDd8x4PZSOsiFRkpPcOq6bj1r/mjH/Rk73gSlIJP2A==}
+  lucide-react@0.562.0:
+    resolution: {integrity: sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -3375,7 +3375,7 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  convex@1.31.1(react@19.2.3):
+  convex@1.31.2(react@19.2.3):
     dependencies:
       esbuild: 0.25.4
       prettier: 3.6.2
@@ -4160,7 +4160,7 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
-  lucide-react@0.561.0(react@19.2.3):
+  lucide-react@0.562.0(react@19.2.3):
     dependencies:
       react: 19.2.3
 
