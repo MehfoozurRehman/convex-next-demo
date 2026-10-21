@@ -1,58 +1,51 @@
-# Next.js & Convex Real-Time Starter
+# Convex and Next.js real-time demo
 
-A modern full-stack real-time web application template built with Next.js 15 App Router (Turbopack), Convex reactive backend, React 19, and Tailwind CSS v4.
+A small full-stack starter that shows live presence and a shared todo list, with Convex keeping every connected browser in sync without polling.
 
-## Overview
+## The problem
 
-`convex-next-demo` demonstrates zero-latency live state synchronization between client and server using Convex queries, mutations, actions, and modern React 19 Server/Client components.
+Real-time features usually mean wiring websockets, a server cache and client state by hand. This project shows another approach: components subscribe to queries, and the backend pushes changes. An update in one browser appears in the others without a refresh and without a separate API layer.
 
-## Tech Stack
+## What it does
 
-- **Framework**: [Next.js](https://nextjs.org/) (v15 App Router, Turbopack)
-- **Backend & Database**: [Convex](https://convex.dev/) (`convex`)
-- **Frontend Core**: React 19, TypeScript
-- **UI & Components**: Radix UI Primitives, Lucide Icons, `next-themes`
-- **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`)
+- **Email sign-in.** Entering an email creates the user, or signs in the existing user with that address.
+- **Live presence list.** Every user is shown as online or offline, and the list updates as people sign in and out.
+- **Per-user todos.** Each signed-in user adds todos and toggles them done. Every todo shows who created it.
+- **Expiring todos.** Each new todo is scheduled for deletion five seconds after it is created.
+- **Logout.** Marks the user offline and returns to the sign-in form.
 
-## Prerequisites
+## How it's built
 
-- Node.js (v20 or higher recommended)
-- Package manager (`pnpm` recommended)
-- Convex backend account
+- **Stack:** Next.js 15 with the App Router and Turbopack, React 19, Convex, Tailwind CSS v4, Radix UI primitives and TypeScript.
+- **Reactive data flow.** Components call `useQuery` and `useMutation` from `convex/react` with generated API types, so the UI re-renders when the data changes. The schema has two tables: `user` (email, online, indexed by `byEmail`) and `todo` (title, completed, `createdBy`, `lastUpdatedBy`, indexed by `byCreatedBy`).
+- **Expiry runs on the server.** `todos.createTodo` schedules the internal mutation `todos.destruct` with `ctx.scheduler.runAfter`, so deletion does not depend on a browser staying open.
+- **One client provider.** `ConvexClientProvider` reads `NEXT_PUBLIC_CONVEX_URL` once and wraps the app in `app/layout.tsx`.
 
-## Getting Started
+## Running it locally
 
-1. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
+```bash
+pnpm install
+```
 
-2. **Configure Environment Variables**:
-   Create a `.env.local` file:
-   ```env
-   NEXT_PUBLIC_CONVEX_URL="your-convex-deployment-url"
-   ```
+Create `.env.local` with your Convex deployment URL:
 
-3. **Start the Convex Backend**:
-   ```bash
-   npx convex dev
-   ```
+```env
+NEXT_PUBLIC_CONVEX_URL="your-convex-deployment-url"
+```
 
-4. **Run the Development Server**:
-   ```bash
-   pnpm dev
-   ```
+Then, in two terminals:
 
-5. **Access the Application**:
-   Open `http://localhost:3000` in your web browser.
+```bash
+npx convex dev            # Convex backend, keep running
+pnpm dev                  # Next.js with Turbopack on http://localhost:3000
+```
 
-## Available Scripts
+Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`. Note that `dev`, `build` and `start` each run `node api.js` before Next.js. See the notes below.
 
-- `pnpm dev` - Starts the Next.js dev server with Turbopack.
-- `pnpm build` - Creates an optimized production build.
-- `pnpm start` - Runs the production server.
-- `pnpm lint` - Runs ESLint code quality checks.
+## What I learned and what I'd do next
 
-## Author
-
-Created by [Mehfooz-ur-Rehman](https://github.com/MehfoozurRehman).
+- **Review `api.js` before running this project.** The file in the repo root is minified and obfuscated. The `dev`, `build` and `start` scripts all run it first, and nothing in the README or source explains what it does. Document it, replace it with readable code, or remove it.
+- **Todo lifetime doesn't match its name.** `createTodo` defines an unused `after24Hours` constant, but the scheduler deletes todos after 5,000 ms. Pick the intended lifetime and make the code and the names agree.
+- **Authorization is missing.** `todos.updateTodo` accepts any todo ID, with no ownership check, and `user.getUsers` returns every user's email. Add ownership checks and real sign-in before any real data goes in.
+- **Presence is only cleared on Logout.** Closing the tab leaves a user shown as online. A heartbeat or Convex presence component would fix it.
+- **No tests.** `convex/README.md` is still the Convex template text and should be replaced with a description of this project's functions.
