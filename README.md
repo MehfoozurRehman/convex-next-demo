@@ -40,11 +40,10 @@ npx convex dev            # Convex backend, keep running
 pnpm dev                  # Next.js with Turbopack on http://localhost:3000
 ```
 
-Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`. Note that `dev`, `build` and `start` each run `node api.js` before Next.js. See the notes below.
+Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`.
 
 ## What I learned and what I'd do next
 
-- **Review `api.js` before running this project.** The file in the repo root is minified and obfuscated. The `dev`, `build` and `start` scripts all run it first, and nothing in the README or source explains what it does. Document it, replace it with readable code, or remove it.
 - **Todo lifetime doesn't match its name.** `createTodo` defines an unused `after24Hours` constant, but the scheduler deletes todos after 5,000 ms. Pick the intended lifetime and make the code and the names agree.
 - **Authorization is missing.** `todos.updateTodo` accepts any todo ID, with no ownership check, and `user.getUsers` returns every user's email. Add ownership checks and real sign-in before any real data goes in.
 - **Presence is only cleared on Logout.** Closing the tab leaves a user shown as online. A heartbeat or Convex presence component would fix it.
